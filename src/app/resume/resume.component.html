@@ -1,0 +1,14 @@
+<div class="jumbotron">
+  <h1 class="display-4">Hello, world!</h1>
+  <p class="lead">Humble, contemplative, engineer with 5 years of professional experience writing and maintaining web applications.</p>
+  <hr class="my-4">
+  <p>Some more information about myself</p>
+</div>
+
+<div *ngFor="let employment of employmentHistory">
+  <div>{{ employment.dateStart | date }} - {{ employment.dateEnd | date }}</div>
+  <div>{{ employment.employer }}</div>
+  <ul>
+    <li *ngFor="let item of employment.content">{{ item }}</li>
+  </ul>
+</div>

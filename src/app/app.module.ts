@@ -3,14 +3,23 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
+import { ResumeComponent } from './resume/resume.component';
+import { RouterModule, Routes } from '@angular/router';
+
+
+const routes: Routes = [
+  {path: '', component: ResumeComponent}
+];
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ResumeComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
