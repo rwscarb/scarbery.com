@@ -1,17 +1,32 @@
 <div class="jumbotron">
   <h1 class="display-4">Hello, world!</h1>
-  <p class="lead">Humble, contemplative, engineer with 5 years of professional experience writing and maintaining web applications.</p>
+  <p class="lead">
+    Humble, contemplative, engineer with 5 years of professional experience writing and maintaining web applications.
+  </p>
   <hr class="my-4">
   <p>Some more information about myself</p>
 </div>
 
+<div class="row">
+  <h2>Work History</h2>
+</div>
 <div *ngFor="let employment of employmentHistory">
-  <div>{{ employment.dateStart | date }} - {{ employment.dateEnd | date }}</div>
-  <div>{{ employment.employer }}</div>
-  <ul>
-    <li *ngFor="let item of employment.content">{{ item }}</li>
-  </ul>
-  <div class="float-right">
-    <div class="badge badge-pill badge-success" *ngFor="let accolade of employment.accolades">{{ accolade }}</div>
+  <div class="row">{{ employment.employer }} ({{ employment.dateStart | date }} - {{ employment.dateEnd | date }})</div>
+  <div class="row">
+    <ul>
+      <li *ngFor="let item of employment.content">{{ item }}</li>
+    </ul>
+    <ul>
+      <li class="badge badge-pill badge-success" *ngFor="let accolade of employment.accolades">{{ accolade }}</li>
+    </ul>
   </div>
 </div>
+<div class="row">
+  <h2>Education</h2>
+</div>
+<div class="row">
+  <ul *ngFor="let edu of education">
+    <li>{{ edu.title }}</li>
+  </ul>
+</div>
+
