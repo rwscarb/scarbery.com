@@ -11,13 +11,17 @@ import { ProjectsComponent } from './projects/projects.component';
 import { BlockchainService } from './projects/btcbalance/blockchain.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BtcbalanceComponent } from './projects/btcbalance/btcbalance.component';
+import { BowlingComponent } from './projects/bowling/bowling.component';
 
 
 const routes: Routes = [
   {path: 'resume', component: ResumeComponent, children: [
       {path: 'employment', component: EmploymentComponent},
       {path: 'education', component: EducationComponent},
-      {path: 'projects', component: ProjectsComponent}
+    ],
+  },
+  {path: 'projects', component: ProjectsComponent, children: [
+      {path: 'bowling', component: BowlingComponent}
     ]},
   {path: '**', redirectTo: '/resume'}
 ];
@@ -30,7 +34,8 @@ const routes: Routes = [
     EmploymentComponent,
     EducationComponent,
     ProjectsComponent,
-    BtcbalanceComponent
+    BtcbalanceComponent,
+    BowlingComponent
   ],
   imports: [
     BrowserModule,
