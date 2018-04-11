@@ -4,29 +4,18 @@
     Humble, contemplative, engineer with 5 years of professional experience writing and maintaining web applications.
   </p>
   <hr class="my-4">
-  <p>Some more information about myself</p>
+  <code>import self</code>
 </div>
 
-<div class="row">
-  <h2>Work History</h2>
-</div>
-<div *ngFor="let employment of employmentHistory">
-  <div class="row">{{ employment.employer }} ({{ employment.dateStart | date }} - {{ employment.dateEnd | date }})</div>
-  <div class="row">
-    <ul>
-      <li *ngFor="let item of employment.content">{{ item }}</li>
-    </ul>
-    <ul>
-      <li class="badge badge-pill badge-success" *ngFor="let accolade of employment.accolades">{{ accolade }}</li>
-    </ul>
+<nav>
+  <div class="nav nav-tabs">
+    <a class="nav-item nav-link" routerLinkActive="active" routerLink="employment">Work History</a>
+    <a class="nav-item nav-link" routerLinkActive="active" routerLink="education">Education</a>
+    <a class="nav-item nav-link disabled">Projects</a>
+    <a class="nav-item nav-link disabled">Links</a>
   </div>
-</div>
-<div class="row">
-  <h2>Education</h2>
-</div>
-<div class="row">
-  <ul *ngFor="let edu of education">
-    <li>{{ edu.title }}</li>
-  </ul>
+</nav>
+<div class="tab-content">
+    <router-outlet></router-outlet>
 </div>
 
