@@ -1,4 +1,4 @@
-<div class="row dashboard">
+<div class="dashboard">
   <div>Attempt: {{ attempt + 1 }}</div>
   <div>Frame: {{ currentFrame + 1 }}</div>
 </div>
@@ -13,8 +13,9 @@
 </div>
 
 <div class="form">
-  <div class="form-group">
-    <input type="text" class="form-control" #pinsDown placeholder="Pins knocked down" ngmo>
-    <input type="submit" class="form-control" value="Score" (click)="onScore(+pinsDown.value)" [disabled]="gameOver">
+  <div class="form-group" [formGroup]="pinsDownForm">
+    <input type="number" class="form-control" formControlName="pinsDown" placeholder="number of pins knocked down">
+    <input type="submit" class="form-control" value="Score" (click)="onScore(+pins.value)" [disabled]="gameOver">
   </div>
+  <div class="alert alert-danger" [hidden]="pinsDownForm.valid || pinsDownForm.pristine">Number of pins must be 0-10</div>
 </div>

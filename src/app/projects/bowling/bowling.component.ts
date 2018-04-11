@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-bowling',
@@ -10,12 +11,21 @@ export class BowlingComponent implements OnInit {
   frames: [[number, number]];
   currentFrame = 0;
   attempt = 0;
+  pinsDown: number;
   gameOver = false;
+  pinsDownForm: FormGroup;
 
   constructor() { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.initFrames();
+    this.pinsDownForm = new FormGroup({
+      'pinsDown': new FormControl(this.pinsDown, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(10)
+        ])
+    });
   }
 
   private initFrames() {

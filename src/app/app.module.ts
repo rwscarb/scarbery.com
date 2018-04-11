@@ -12,6 +12,7 @@ import { BlockchainService } from './projects/btcbalance/blockchain.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BtcbalanceComponent } from './projects/btcbalance/btcbalance.component';
 import { BowlingComponent } from './projects/bowling/bowling.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 const routes: Routes = [
@@ -40,6 +41,8 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(routes)
   ],
   providers: [
