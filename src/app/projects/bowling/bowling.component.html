@@ -1,3 +1,20 @@
-<p>
-  bowling works!
-</p>
+<div class="row">
+  <div>Attempt: {{ attempt + 1 }}</div>
+  <div>Frame: {{ currentFrame + 1 }}</div>
+</div>
+
+<div class="row">
+  <div *ngFor="let frame of frames">
+    <div class="col-1">
+      <div class="first-throw">{{ frame[0] }}</div>
+      <div class="second-throw">{{ frame[1] }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="form">
+  <div class="form-group">
+    <input type="text" class="form-control" #pinsDown placeholder="Pins knocked down" ngmo>
+    <input type="submit" class="form-control" value="Score" (click)="onScore(+pinsDown.value)" [disabled]="gameOver">
+  </div>
+</div>
