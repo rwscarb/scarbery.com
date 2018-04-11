@@ -6,8 +6,8 @@ export class BlockchainService {
 
   constructor(private http: HttpClient) { }
 
-  getBalance() {
-    return this.http.get('https://blockchain.info/q/addressbalance/352zCmfv2KXN6h2ihni1WMzHwDr4tmUgMt');
+  getBalance(address: string) {
+    return this.http.get('https://blockchain.info/q/addressbalance/' + address);
   }
 
   getPrice() {

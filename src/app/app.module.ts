@@ -8,8 +8,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { EmploymentComponent } from './resume/employment/employment.component';
 import { EducationComponent } from './resume/education/education.component';
 import { ProjectsComponent } from './projects/projects.component';
-import { BlockchainService } from './projects/blockchain.service';
+import { BlockchainService } from './projects/btcbalance/blockchain.service';
 import { HttpClientModule } from '@angular/common/http';
+import { BtcbalanceComponent } from './projects/btcbalance/btcbalance.component';
 
 
 const routes: Routes = [
@@ -28,7 +29,8 @@ const routes: Routes = [
     ResumeComponent,
     EmploymentComponent,
     EducationComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    BtcbalanceComponent
   ],
   imports: [
     BrowserModule,
