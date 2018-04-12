@@ -42,6 +42,9 @@ export class BowlingComponent implements OnInit {
   onScore(score: number) {
     this.activeFrame[this.attempt] = score;
     this.attempt = (this.attempt +  1) % 2;
+    if (score === 10) {
+      this.attempt = 0;
+    }
     if (this.attempt === 0) {
       this.currentFrame++;
       if (this.currentFrame === this.numOfFrames) {
