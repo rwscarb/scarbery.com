@@ -28,3 +28,7 @@
 #pinsDown {
   margin: 1em 0;
 }
+
+.active-frame {
+  background: #e9ecef;
+}

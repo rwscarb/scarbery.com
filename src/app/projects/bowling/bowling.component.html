@@ -4,7 +4,9 @@
 </div>
 
 <div class="scoreboard">
-  <div *ngFor="let frame of frames" class="frame" [hidden]="frame.isLastFrame && !frame.visited">
+  <div *ngFor="let frame of frames" class="frame"
+       [ngClass]="{'active-frame': frame === activeFrame}"
+       [hidden]="frame.isLastFrame && !frame.visited">
     <div class="attempts">
       <div class="attempt first-attempt">{{ frame.attempts[0] }}</div>
       <div class="attempt second-attempt">{{ frame.attempts[1] }}</div>
