@@ -12,13 +12,13 @@
   </div>
 </div>
 
-<div class="form">
+<form class="form">
   <div class="form-group" [formGroup]="pinsDownForm">
     <input type="number" class="form-control" #pins formControlName="pinsDown"
-           placeholder="number of pins knocked down">
+           placeholder="number of pins knocked down" autofocus>
     <input type="submit" class="form-control" value="Score"
            (click)="onScore(+pins.value)" [disabled]="gameOver || pinsDownForm.invalid">
   </div>
   <div class="alert alert-danger" *ngIf="pinsDown.hasError('min')">Number of pins must be 0-10</div>
   <div class="alert alert-danger" *ngIf="pinsDown.hasError('invalidSum')">Total number of pins per frame cannot exceed 10</div>
-</div>
+</form>
