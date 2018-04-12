@@ -33,7 +33,7 @@ export class BowlingComponent implements OnInit {
   private initFrames() {
     this.frames = [];
     for (let i = 0; i < this.numOfFrames; i++) {
-      this.frames.push(new Frame(i, [0, 0]));
+      this.frames.push(new Frame(i, this.frames, [0, 0]));
     }
   }
 
@@ -61,7 +61,7 @@ export class BowlingComponent implements OnInit {
       const score = control.value;
       if (score !== null) {
 
-        if (component.activeFrame.totalScore + score > 10) {
+        if (component.activeFrame.frameScore + score > 10) {
           return {invalidSum: true};
         }
       }
