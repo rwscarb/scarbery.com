@@ -1,0 +1,8 @@
+<div class="attempts">
+  <div [hidden]="frame.isStrike">
+    <div class="attempt first-attempt">{{ frame.attempts[0] }}</div>
+    <div class="attempt second-attempt" [hidden]="frame.isSpare">{{ frame.attempts[1] }}</div>
+    <div class="attempt second-attempt" [hidden]="!frame.isSpare">/</div>
+  </div>
+  <div class="attempt-strike" [hidden]="!frame.isStrike">X</div>
+</div>

@@ -9,15 +9,6 @@
   border-collapse: collapse;
 }
 
-.attempts {
-  float: right;
-  border: solid black 1px;
-}
-
-.attempt {
-  display: inline-block;
-}
-
 .frame-score {
   bottom: 0;
   position: absolute;

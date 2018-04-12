@@ -1,0 +1,12 @@
+.attempts {
+  float: right;
+  border: solid black 1px;
+  height: 1.7em;
+  width: 1.7em;
+  text-align: center;
+}
+
+.attempt {
+  display: inline-block;
+}
+

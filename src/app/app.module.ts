@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BtcbalanceComponent } from './projects/btcbalance/btcbalance.component';
 import { BowlingComponent } from './projects/bowling/bowling.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SubframeComponent } from './projects/bowling/subframe/subframe.component';
 
 
 const routes: Routes = [
@@ -36,7 +37,8 @@ const routes: Routes = [
     EducationComponent,
     ProjectsComponent,
     BtcbalanceComponent,
-    BowlingComponent
+    BowlingComponent,
+    SubframeComponent
   ],
   imports: [
     BrowserModule,

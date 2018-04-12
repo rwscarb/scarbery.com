@@ -7,10 +7,7 @@
   <div *ngFor="let frame of frames" class="frame"
        [ngClass]="{'active-frame': frame === activeFrame}"
        [hidden]="frame.isLastFrame && !frame.visited">
-    <div class="attempts">
-      <div class="attempt first-attempt">{{ frame.attempts[0] }}</div>
-      <div class="attempt second-attempt">{{ frame.attempts[1] }}</div>
-    </div>
+      <app-subframe [frame]="frame"></app-subframe>
     <div class="frame-score" [hidden]="!frame.visited || frame.isLastFrame">{{ frame.cumulativeScore }}</div>
   </div>
 </div>
