@@ -6,7 +6,7 @@
 <div class="scoreboard">
   <div *ngFor="let frame of frames" class="frame"
        [ngClass]="{'active-frame': frame === activeFrame}"
-       [hidden]="frame.isLastFrame && !frame.visited">
+       [hidden]="frame.isLastFrame">
       <app-subframe [frame]="frame"></app-subframe>
     <div class="frame-score" [hidden]="!frame.visited || frame.isLastFrame">{{ frame.cumulativeScore }}</div>
   </div>
