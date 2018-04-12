@@ -1,4 +1,6 @@
 export class Frame {
+  visited = false;
+
   constructor(private index: number, private frames: Frame[], public attempts: number[]) {
   }
 
@@ -57,5 +59,9 @@ export class Frame {
       }
     }
     return this.frameScore + totalScore;
+  }
+
+  get cumulativeScore(): number {
+    return this.prevFrame ? this.prevFrame.cumulativeScore + this.totalScore : this.totalScore;
   }
 }
