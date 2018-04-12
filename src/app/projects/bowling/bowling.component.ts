@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AbstractControl } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Frame } from './frame.model';
+
 
 @Component({
   selector: 'app-bowling',
@@ -9,7 +10,7 @@ import { AbstractControl } from '@angular/forms';
 })
 export class BowlingComponent implements OnInit {
   numOfFrames = 10;
-  frames: [[number, number]];
+  frames: Frame[];
   currentFrame = 0;
   attempt = 0;
   gameOver = false;
@@ -32,7 +33,7 @@ export class BowlingComponent implements OnInit {
   private initFrames() {
     this.frames = [];
     for (let i = 0; i < this.numOfFrames; i++) {
-      this.frames.push([0, 0]);
+      this.frames.push(new Frame(i, [0, 0]));
     }
   }
 
@@ -40,7 +41,7 @@ export class BowlingComponent implements OnInit {
   get pinsDown() {return this.pinsDownForm.get('pinsDown'); }
 
   onScore(score: number) {
-    this.activeFrame[this.attempt] = score;
+    this.activeFrame.attempts[this.attempt] = score;
     this.attempt = (this.attempt +  1) % 2;
     if (score === 10) {
       this.attempt = 0;
@@ -48,6 +49,7 @@ export class BowlingComponent implements OnInit {
     if (this.attempt === 0) {
       this.currentFrame++;
       if (this.currentFrame === this.numOfFrames) {
+        // todo: allow for strike and spare in 10th frame
         this.gameOver = true;
       }
     }
@@ -58,10 +60,9 @@ export class BowlingComponent implements OnInit {
     return (control: AbstractControl) => {
       const score = control.value;
       if (score !== null) {
-        const sum = component.activeFrame[0] + score;
 
-        if (sum > 10) {
-          return {invalidSum: {value: sum}};
+        if (component.activeFrame.totalScore + score > 10) {
+          return {invalidSum: true};
         }
       }
       return null;

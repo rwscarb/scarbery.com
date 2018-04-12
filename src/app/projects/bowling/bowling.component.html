@@ -6,8 +6,8 @@
 <div class="scoreboard">
   <div *ngFor="let frame of frames" class="frame">
     <div class="attempts">
-      <div class="attempt first-attempt">{{ frame[0] }}</div>
-      <div class="attempt second-attempt">{{ frame[1] }}</div>
+      <div class="attempt first-attempt">{{ frame.attempts[0] }}</div>
+      <div class="attempt second-attempt">{{ frame.attempts[1] }}</div>
     </div>
   </div>
 </div>
