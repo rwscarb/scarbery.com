@@ -16,7 +16,7 @@
 <form class="form">
   <div class="form-group" [formGroup]="pinsDownForm">
     <input type="number" class="form-control" #pins formControlName="pinsDown"
-           placeholder="number of pins knocked down" autofocus>
+           placeholder="number of pins knocked down" id="pinsDown" autofocus>
     <input type="submit" class="form-control" value="Score"
            (click)="onScore(+pins.value)" [disabled]="gameOver || pinsDownForm.invalid">
   </div>

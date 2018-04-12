@@ -1,5 +1,6 @@
 .frame {
   display: inline-block;
+  position: relative;
   width: 5em;
   height: 5em;
   margin: .1em;
@@ -15,4 +16,15 @@
 
 .attempt {
   display: inline-block;
+}
+
+.frame-score {
+  bottom: 0;
+  position: absolute;
+  font-size: 1.5em;
+  margin-left: .2em;
+}
+
+#pinsDown {
+  margin: 1em 0;
 }
