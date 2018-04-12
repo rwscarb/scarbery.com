@@ -26,30 +26,44 @@ export class BowlingComponent implements OnInit {
         Validators.min(0),
         Validators.max(10),
         this.validateScore(this) // xxx: there must be a better way
-        ])
+      ])
     });
   }
 
   private initFrames() {
     this.frames = [];
-    for (let i = 0; i < this.numOfFrames; i++) {
+    let i = 0;
+    for (; i < this.numOfFrames; i++) {
       this.frames.push(new Frame(i, this.frames, [0, 0]));
     }
+    this.frames.push(new Frame(i, this.frames, [0, 0])); // potential 11th frame
   }
 
-  get activeFrame() {return this.frames[this.currentFrame]; }
-  get pinsDown() {return this.pinsDownForm.get('pinsDown'); }
+  get activeFrame() {
+    return this.frames[this.currentFrame];
+  }
+
+  get pinsDown() {
+    return this.pinsDownForm.get('pinsDown');
+  }
 
   onScore(score: number) {
     this.activeFrame.attempts[this.attempt] = score;
-    this.attempt = (this.attempt +  1) % 2;
-    if (score === 10) {// if bowled a strike move to next frame
+
+    this.attempt++;
+
+    if (!this.activeFrame.isLastFrame && (score === 10 || this.attempt > 1)) {
       this.attempt = 0;
-    }
-    if (this.attempt === 0) {
       this.currentFrame++;
-      if (this.currentFrame === this.numOfFrames) {
-        // todo: allow for strike and spare in 10th frame
+    }
+
+    if (this.currentFrame === this.numOfFrames) { // on the 11th frame
+      const prevFrame = this.activeFrame.prevFrame;
+      if (prevFrame.isStrike && this.attempt > 1) {
+        this.gameOver = true;
+      } else if (prevFrame.isSpare && this.attempt > 0) {
+        this.gameOver = true;
+      } else if (!(prevFrame.isStrike || prevFrame.isSpare)) {
         this.gameOver = true;
       }
     }
@@ -61,7 +75,13 @@ export class BowlingComponent implements OnInit {
       const score = control.value;
       if (score !== null) {
 
-        if (component.activeFrame.frameScore + score > 10) {
+        if (component.activeFrame.isLastFrame) {
+          if (score > 10) {
+            return {invalidSum: true};
+          } else if (!component.activeFrame.isStrike && component.activeFrame.frameScore + score > 10) {
+            return {invalidSum: true};
+          }
+        } else if (component.activeFrame.frameScore + score > 10) {
           return {invalidSum: true};
         }
       }

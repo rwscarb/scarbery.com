@@ -1,12 +1,17 @@
 export class Frame {
-  constructor(private index: number, private frames: Frame[], public attempts: number[]) { }
+  constructor(private index: number, private frames: Frame[], public attempts: number[]) {
+  }
 
-  get hasNext(): boolean {
-    return this.index < this.frames.length;
+  get isLastFrame(): boolean {
+    return this.index === this.frames.length - 1;
   }
 
   get nextFrame(): Frame {
     return this.frames[this.index + 1];
+  }
+
+  get prevFrame(): Frame {
+    return this.frames[this.index - 1];
   }
 
   get isStrike(): boolean {
@@ -37,10 +42,13 @@ export class Frame {
 
   get totalScore(): number {
     let totalScore = 0;
-    if (this.hasNext) {
+    if (!this.isLastFrame) {
       if (this.isStrike) {
         if (this.nextFrame.isStrike) {
-          totalScore += this.nextFrame.frameScore + this.nextFrame.nextFrame.attempts[0];
+          totalScore += this.nextFrame.frameScore;
+          if (!this.nextFrame.isLastFrame) {
+            totalScore += this.nextFrame.nextFrame.attempts[0];
+          }
         } else {
           totalScore += this.nextFrame.frameScore;
         }
