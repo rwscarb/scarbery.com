@@ -1,3 +1,7 @@
+.scoreboard {
+  text-align: center;
+}
+
 .frame {
   display: inline-block;
   position: relative;
