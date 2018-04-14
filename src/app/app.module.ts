@@ -1,7 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-
 import { AppComponent } from './app.component';
 import { ResumeComponent } from './resume/resume.component';
 import { RouterModule, Routes } from '@angular/router';
@@ -14,6 +13,7 @@ import { BtcbalanceComponent } from './projects/btcbalance/btcbalance.component'
 import { BowlingComponent } from './projects/bowling/bowling.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SubframeComponent } from './projects/bowling/subframe/subframe.component';
+import { BowlingService } from "./projects/bowling/bowling.service";
 
 
 const routes: Routes = [
@@ -48,6 +48,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   providers: [
+    BowlingService,
     BlockchainService
   ],
   bootstrap: [AppComponent]

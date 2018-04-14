@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ATTEMPTS_PER_FRAME, NUM_OF_FRAMES, STRIKE } from "./bowling.constants";
+import { BowlingService } from "./bowling.service";
 import { Frame } from './frame.model';
 
 
@@ -18,7 +19,7 @@ export class BowlingComponent implements OnInit {
   gameOver = false;
   pinsDownForm: FormGroup;
 
-  constructor() { }
+  constructor(private bowlingService: BowlingService) { }
 
   ngOnInit(): void {
     this.initFrames();
@@ -36,12 +37,20 @@ export class BowlingComponent implements OnInit {
     this.frames = [];
     let i = 0;
     for (; i < this.numOfFrames; i++) {
-      this.frames.push(new Frame(i, this.frames, new Array(ATTEMPTS_PER_FRAME).fill(0)));
+      this.frames.push(new Frame(i, this.frames, new Array(ATTEMPTS_PER_FRAME).fill(null)));
     }
-    this.frames.push(new Frame(i, this.frames, new Array(ATTEMPTS_PER_FRAME).fill(0))); // potential 11th frame
+    this.frames.push(new Frame(i, this.frames, new Array(ATTEMPTS_PER_FRAME).fill(null))); // potential 11th frame
   }
 
-  get activeFrame() {
+  getFrames() {
+    this.bowlingService.getFrames(this.frames)
+      .subscribe(frames => {
+        this.currentFrame = 1;
+        this.attempt = 1;
+      });
+  }
+
+  get activeFrame(): Frame {
     return this.frames[this.currentFrame];
   }
 
@@ -51,6 +60,8 @@ export class BowlingComponent implements OnInit {
 
   onScore(score: number) {
     this.activeFrame.attempts[this.attempt] = score;
+
+    this.bowlingService.score(this.currentFrame, this.attempt, score).subscribe();
 
     this.attempt++;
     this.activeFrame.visited = true;
