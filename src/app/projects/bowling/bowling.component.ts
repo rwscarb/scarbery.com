@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+
+import { ATTEMPTS_PER_FRAME, NUM_OF_FRAMES, STRIKE } from "./bowling.constants";
 import { Frame } from './frame.model';
 
 
@@ -9,7 +11,7 @@ import { Frame } from './frame.model';
   styleUrls: ['./bowling.component.css']
 })
 export class BowlingComponent implements OnInit {
-  numOfFrames = 10;
+  numOfFrames = NUM_OF_FRAMES;
   frames: Frame[];
   currentFrame = 0;
   attempt = 0;
@@ -24,7 +26,7 @@ export class BowlingComponent implements OnInit {
       'pinsDown': new FormControl('', [
         Validators.required,
         Validators.min(0),
-        Validators.max(10),
+        Validators.max(STRIKE),
         this.validateScore(this) // xxx: there must be a better way
       ])
     });
@@ -34,9 +36,9 @@ export class BowlingComponent implements OnInit {
     this.frames = [];
     let i = 0;
     for (; i < this.numOfFrames; i++) {
-      this.frames.push(new Frame(i, this.frames, [0, 0]));
+      this.frames.push(new Frame(i, this.frames, new Array(ATTEMPTS_PER_FRAME).fill(0)));
     }
-    this.frames.push(new Frame(i, this.frames, [0, 0])); // potential 11th frame
+    this.frames.push(new Frame(i, this.frames, new Array(ATTEMPTS_PER_FRAME).fill(0))); // potential 11th frame
   }
 
   get activeFrame() {
@@ -53,14 +55,14 @@ export class BowlingComponent implements OnInit {
     this.attempt++;
     this.activeFrame.visited = true;
 
-    if (!this.activeFrame.isLastFrame && (score === 10 || this.attempt > 1)) {
+    if (!this.activeFrame.isLastFrame && (score === STRIKE || this.attempt === ATTEMPTS_PER_FRAME)) {
       this.attempt = 0;
       this.currentFrame++;
     }
 
     if (this.currentFrame === this.numOfFrames) { // on the 11th frame
       const prevFrame = this.activeFrame.prevFrame;
-      if (prevFrame.isStrike && this.attempt > 1) {
+      if (prevFrame.isStrike && this.attempt === ATTEMPTS_PER_FRAME) {
         this.gameOver = true;
       } else if (prevFrame.isSpare && this.attempt > 0) {
         this.gameOver = true;
@@ -77,12 +79,12 @@ export class BowlingComponent implements OnInit {
       if (score !== null) {
 
         if (component.activeFrame.isLastFrame) {
-          if (score > 10) {
+          if (score > STRIKE) {
             return {invalidSum: true};
-          } else if (!component.activeFrame.isStrike && component.activeFrame.frameScore + score > 10) {
+          } else if (!component.activeFrame.isStrike && component.activeFrame.frameScore + score > STRIKE) {
             return {invalidSum: true};
           }
-        } else if (component.activeFrame.frameScore + score > 10) {
+        } else if (component.activeFrame.frameScore + score > STRIKE) {
           return {invalidSum: true};
         }
       }

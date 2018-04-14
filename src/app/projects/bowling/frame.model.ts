@@ -1,3 +1,6 @@
+import { STRIKE } from "./bowling.constants";
+
+
 export class Frame {
   visited = false;
 
@@ -19,7 +22,7 @@ export class Frame {
   get isStrike(): boolean {
     let isStrike = false;
     this.attempts.forEach((score: number) => {
-      if (score === 10) {
+      if (score === STRIKE) {
         isStrike = true;
         return;
       }
@@ -31,7 +34,7 @@ export class Frame {
     if (this.isStrike) {
       return false;
     }
-    return this.frameScore === 10;
+    return this.frameScore === STRIKE;
   }
 
   get frameScore(): number {
@@ -44,7 +47,7 @@ export class Frame {
 
   get totalScore(): number {
     let totalScore = 0;
-    if (!this.isLastFrame) {
+    if (this.nextFrame) {
       if (this.isStrike) {
         if (this.nextFrame.isStrike) {
           totalScore += this.nextFrame.frameScore;
