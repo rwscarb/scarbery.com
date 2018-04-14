@@ -46,21 +46,33 @@ export class BowlingComponent implements OnInit {
   getFrames() {
     this.bowlingService.getFrames(this.frames)
       .subscribe(frames => {
-        this.moveToCurrentAttempt();
+        let {currentFrame, currentAttempt} = this.getCurrentAttempt(this.frames);
+        this.currentFrame = currentFrame;
+        this.currentAttempt = currentAttempt;
       });
   }
 
-  moveToCurrentAttempt() {
-    // let score = null;
-    // while (score !== null) {
-    // this.currentFrame = 1;
-    // this.currentAttempt = 1;
-    // }
-    for (let frame of this.frames) {
+  getCurrentAttempt(frames: Frame[]): {currentFrame: number, currentAttempt: number} {
+    for (let frame of frames) {
       if (!frame.visited) {
-        this.currentFrame = frame.index;
-        break;
+        let prevFrame = frame.prevFrame;
+        for (let i in prevFrame.attempts) { // check if previous frame was partially finished
+          if (prevFrame.attempts[i] === null) {
+            return {
+              currentFrame: prevFrame.index,
+              currentAttempt: +i
+            };
+          }
+        }
+        return {
+          currentFrame: frame.index,
+          currentAttempt: 0
+        }
       }
+    }
+    return { // game over
+      currentFrame: -1,
+      currentAttempt: -1
     }
   }
 
