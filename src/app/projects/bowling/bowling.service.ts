@@ -12,7 +12,7 @@ export class BowlingService {
 
   getFrames(frames: Frame[]) {
     return this.http.get('http://127.0.0.1:8000/v1/bowling/games/ab9cb6ea-2153-42d2-a9d9-6d85ad17573c')
-      .map(res => {
+      .map((res : any) => {
         // populate the frames
         for (let score of res.score_set) {
           let frame = frames[score.frame - 1];

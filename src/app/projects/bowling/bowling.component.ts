@@ -15,11 +15,12 @@ export class BowlingComponent implements OnInit {
   numOfFrames = NUM_OF_FRAMES;
   frames: Frame[];
   currentFrame = 0;
-  attempt = 0;
+  currentAttempt = 0;
   gameOver = false;
   pinsDownForm: FormGroup;
 
-  constructor(private bowlingService: BowlingService) { }
+  constructor(private bowlingService: BowlingService) {
+  }
 
   ngOnInit(): void {
     this.initFrames();
@@ -45,9 +46,22 @@ export class BowlingComponent implements OnInit {
   getFrames() {
     this.bowlingService.getFrames(this.frames)
       .subscribe(frames => {
-        this.currentFrame = 1;
-        this.attempt = 1;
+        this.moveToCurrentAttempt();
       });
+  }
+
+  moveToCurrentAttempt() {
+    // let score = null;
+    // while (score !== null) {
+    // this.currentFrame = 1;
+    // this.currentAttempt = 1;
+    // }
+    for (let frame of this.frames) {
+      if (!frame.visited) {
+        this.currentFrame = frame.index;
+        break;
+      }
+    }
   }
 
   get activeFrame(): Frame {
@@ -59,23 +73,23 @@ export class BowlingComponent implements OnInit {
   }
 
   onScore(score: number) {
-    this.activeFrame.attempts[this.attempt] = score;
+    this.activeFrame.attempts[this.currentAttempt] = score;
 
-    this.bowlingService.score(this.currentFrame, this.attempt, score).subscribe();
+    this.bowlingService.score(this.currentFrame, this.currentAttempt, score).subscribe();
 
-    this.attempt++;
+    this.currentAttempt++;
     this.activeFrame.visited = true;
 
-    if (!this.activeFrame.isLastFrame && (score === STRIKE || this.attempt === ATTEMPTS_PER_FRAME)) {
-      this.attempt = 0;
+    if (!this.activeFrame.isLastFrame && (score === STRIKE || this.currentAttempt === ATTEMPTS_PER_FRAME)) {
+      this.currentAttempt = 0;
       this.currentFrame++;
     }
 
     if (this.currentFrame === this.numOfFrames) { // on the 11th frame
       const prevFrame = this.activeFrame.prevFrame;
-      if (prevFrame.isStrike && this.attempt === ATTEMPTS_PER_FRAME) {
+      if (prevFrame.isStrike && this.currentAttempt === ATTEMPTS_PER_FRAME) {
         this.gameOver = true;
-      } else if (prevFrame.isSpare && this.attempt > 0) {
+      } else if (prevFrame.isSpare && this.currentAttempt > 0) {
         this.gameOver = true;
       } else if (!(prevFrame.isStrike || prevFrame.isSpare)) {
         this.gameOver = true;

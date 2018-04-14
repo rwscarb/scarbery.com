@@ -4,7 +4,7 @@ import { STRIKE } from "./bowling.constants";
 export class Frame {
   visited = false;
 
-  constructor(private index: number, private frames: Frame[], public attempts: number[]) {
+  constructor(public index: number, private frames: Frame[], public attempts: number[]) {
   }
 
   get isLastFrame(): boolean {
