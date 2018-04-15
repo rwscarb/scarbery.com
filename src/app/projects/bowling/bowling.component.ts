@@ -18,6 +18,7 @@ export class BowlingComponent implements OnInit {
   currentAttempt = 0;
   currentPlayer = 0;
   game: Game;
+  onExtendedFrame = false; // on e.g. 11th frame due to strike/spare on 10th
   gameOver = false;
   pinsDownForm: FormGroup;
   players: ActivePlayer[] = [];
@@ -58,38 +59,12 @@ export class BowlingComponent implements OnInit {
     });
   }
 
-  // getFrames() {
-  //   this.bowlingService.getFrames(this.frames)
-  //     .subscribe(() => {
-  //       let {currentFrame, currentAttempt} = this.getCurrentAttempt(this.frames);
-  //       this.currentFrame = currentFrame;
-  //       this.currentAttempt = currentAttempt;
-  //     });
-  // }
-
-  // getCurrentAttempt(frames: Frame[]): {currentFrame: number, currentAttempt: number} {
-  //   let frame;
-  //   for (frame of frames) {
-  //     if (!frame.visited) {
-  //       let prevFrame = frame.prevFrame;
-  //       for (let i in prevFrame.attempts) { // check if previous frame was partially finished
-  //         if (prevFrame.attempts[i] === null) {
-  //           return {
-  //             currentFrame: prevFrame.index,
-  //             currentAttempt: +i
-  //           };
-  //         }
-  //       }
-  //     }
-  //   }
-  //   return {
-  //     currentFrame: frame.index,
-  //     currentAttempt: 0
-  //   }
-  // }
-
   get activePlayer(): ActivePlayer {
     return this.players[this.currentPlayer];
+  }
+
+  get lastPlayer(): ActivePlayer {
+    return this.players[this.players.length - 1];
   }
 
   get activeFrame(): Frame {
@@ -100,12 +75,41 @@ export class BowlingComponent implements OnInit {
     return this.pinsDownForm.get('pinsDown');
   }
 
-  incrementPlayerTurn() {
-    this.currentAttempt = 0;
-    this.currentPlayer++;
-    if (this.currentPlayer === this.players.length) {
-      this.currentPlayer = 0;
-      this.currentFrame++;
+  endPlayerTurn() {
+    if (this.isGameOver()) {
+      this.gameOver = true;
+    } else {
+      this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
+      this.currentAttempt = 0;
+
+      if (this.onExtendedFrame) {
+        this.currentFrame--;
+        this.onExtendedFrame = false;
+      } else if (this.currentPlayer === 0) {
+        this.currentFrame++;
+      }
+    }
+  }
+
+  isGameOver(): boolean {
+    return this.activeFrame.isExtendedFrame && this.activePlayer === this.lastPlayer;
+  }
+
+  navigateBoard(score: number) {
+    if (this.activeFrame.isExtendedFrame) {
+      if (this.activeFrame.prevFrame.isStrike && this.currentAttempt === ATTEMPTS_PER_FRAME) {
+        this.endPlayerTurn();
+      } else if (this.activeFrame.prevFrame.isSpare && this.currentAttempt === 1) {
+        this.endPlayerTurn();
+      }
+    } else if (this.activeFrame.nextFrame.isExtendedFrame) {
+      if (this.activeFrame.isSpare || this.activeFrame.isStrike) {
+        this.onExtendedFrame = true;
+        this.currentAttempt = 0;
+        this.currentFrame++;
+      }
+    } else if (score === STRIKE || this.currentAttempt === ATTEMPTS_PER_FRAME) {
+      this.endPlayerTurn();
     }
   }
 
@@ -121,21 +125,8 @@ export class BowlingComponent implements OnInit {
     this.activeFrame.visited = true;
     this.currentAttempt++;
 
+    this.navigateBoard(score);
 
-    if (!this.activeFrame.isLastFrame && (score === STRIKE || this.currentAttempt === ATTEMPTS_PER_FRAME)) {
-      this.incrementPlayerTurn();
-    }
-
-    if (this.activeFrame.isLastFrame) { // on the 11th frame
-      const prevFrame = this.activeFrame.prevFrame;
-      if (prevFrame.isStrike && this.currentAttempt === ATTEMPTS_PER_FRAME) {
-        this.gameOver = true;
-      } else if (prevFrame.isSpare && this.currentAttempt > 0) {
-        this.gameOver = true;
-      } else if (!(prevFrame.isStrike || prevFrame.isSpare)) {
-        this.gameOver = true;
-      }
-    }
     this.pinsDownForm.get('pinsDown').reset();
   }
 
@@ -144,7 +135,7 @@ export class BowlingComponent implements OnInit {
       const score = control.value;
       if (score !== null) {
 
-        if (component.activeFrame.isLastFrame) {
+        if (component.activeFrame.isExtendedFrame) {
           if (score > STRIKE) {
             return {invalidSum: true};
           } else if (!component.activeFrame.isStrike && component.activeFrame.frameScore + score > STRIKE) {

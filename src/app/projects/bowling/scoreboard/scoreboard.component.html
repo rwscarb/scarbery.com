@@ -3,10 +3,10 @@
     {{ player.name }}
   </div>
   <div *ngFor="let frame of frames"
-       [hidden]="frame.isLastFrame"
+       [hidden]="frame.isExtendedFrame"
        [ngClass]="{'active-frame': frame === activeFrame}"
        class="frame">
     <app-subframe [frame]="frame"></app-subframe>
-    <div class="frame-score" [hidden]="!frame.visited || frame.isLastFrame">{{ frame.cumulativeScore }}</div>
+    <div class="frame-score" [hidden]="!frame.visited || frame.isExtendedFrame">{{ frame.cumulativeScore }}</div>
   </div>
 </div>

@@ -7,7 +7,7 @@ export class Frame {
   constructor(public index: number, private frames: Frame[], public attempts: number[]) {
   }
 
-  get isLastFrame(): boolean {
+  get isExtendedFrame(): boolean {
     return this.index === this.frames.length - 1;
   }
 
@@ -51,7 +51,7 @@ export class Frame {
       if (this.isStrike) {
         if (this.nextFrame.isStrike) {
           totalScore += this.nextFrame.frameScore;
-          if (!this.nextFrame.isLastFrame) {
+          if (!this.nextFrame.isExtendedFrame) {
             totalScore += this.nextFrame.nextFrame.attempts[0];
           }
         } else {

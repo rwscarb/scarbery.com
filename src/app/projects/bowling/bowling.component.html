@@ -4,6 +4,8 @@
   <button class="btn btn-primary" (click)="getFrames()">Get Frames</button>
 </div>
 
+<div *ngIf="gameOver">Game Over!</div>
+
 <div *ngFor="let player of players">
   <app-scoreboard [player]="player.player" [frames]="player.frames"></app-scoreboard>
 </div>
