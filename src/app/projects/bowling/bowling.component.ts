@@ -6,6 +6,7 @@ import { BowlingService } from "./bowling.service";
 import { Frame } from './frame.model';
 import { ActivePlayer, Player } from "./player.model";
 import { Game } from "./game.model";
+import { ActivatedRoute } from "@angular/router";
 
 
 @Component({
@@ -23,29 +24,35 @@ export class BowlingComponent implements OnInit {
   pinsDownForm: FormGroup;
   players: ActivePlayer[] = [];
 
-  constructor(private bowlingService: BowlingService) {
+  constructor(private route: ActivatedRoute, private bowlingService: BowlingService) {
   }
 
   ngOnInit(): void {
-    this.initPlayers();
-    this.initGame();
-    this.initForms();
+    this.route.data
+      .subscribe((data) => {
+        let gameData = data.game;
+        // xxx: yuck
+        this.initGame(gameData);
+        this.initPlayers(gameData);
+        this.initForms();
+      });
   }
 
-  initPlayers() {
-    // todo: player/game crud components and score fetching
-    this.players.push(new ActivePlayer(
-      new Player('f67c7105-3e89-492d-8a05-709e7fc1ac3a', 'Janelle'),
-      this.bowlingService.getFrames())
-    );
-    this.players.push(new ActivePlayer(
-      new Player('5ae07c03-f1a0-449b-a153-dd332dacf575', 'Ryan'),
-      this.bowlingService.getFrames())
-    );
+  initPlayers(gameData) {
+    // todo: get player names
+    gameData.players.forEach((id) => {
+      let frames = this.bowlingService.initEmptyFrames();
+      for (let score of gameData.score_set) {
+        let frame = frames[score.frame - 1];
+        frame.visited = true;
+        frame.attempts[score.attempt - 1] = score.value;
+      }
+      this.players.push(new ActivePlayer(new Player(id, 'Janelle'), this.game, frames));
+    });
   }
 
-  initGame() {
-    this.game = new Game('ab9cb6ea-2153-42d2-a9d9-6d85ad17573c');
+  initGame(gameData) {
+    this.game = new Game(gameData.id);
   }
 
   initForms() {
