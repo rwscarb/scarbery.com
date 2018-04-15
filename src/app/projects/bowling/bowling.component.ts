@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { ATTEMPTS_PER_FRAME, NUM_OF_FRAMES, STRIKE } from "./bowling.constants";
+import { ATTEMPTS_PER_FRAME, STRIKE } from "./bowling.constants";
 import { BowlingService } from "./bowling.service";
 import { Frame } from './frame.model';
+import { ActivePlayer, Player } from "./player.model";
+import { Game } from "./game.model";
 
 
 @Component({
@@ -12,18 +14,40 @@ import { Frame } from './frame.model';
   styleUrls: ['./bowling.component.css']
 })
 export class BowlingComponent implements OnInit {
-  numOfFrames = NUM_OF_FRAMES;
-  frames: Frame[];
   currentFrame = 0;
   currentAttempt = 0;
+  currentPlayer = 0;
+  game: Game;
   gameOver = false;
   pinsDownForm: FormGroup;
+  players: ActivePlayer[] = [];
 
   constructor(private bowlingService: BowlingService) {
   }
 
   ngOnInit(): void {
-    this.initFrames();
+    this.initPlayers();
+    this.initGame();
+    this.initForms();
+  }
+
+  initPlayers() {
+    // todo: player/game crud components and score fetching
+    this.players.push(new ActivePlayer(
+      new Player('f67c7105-3e89-492d-8a05-709e7fc1ac3a', 'Janelle'),
+      this.bowlingService.getFrames())
+    );
+    this.players.push(new ActivePlayer(
+      new Player('5ae07c03-f1a0-449b-a153-dd332dacf575', 'Ryan'),
+      this.bowlingService.getFrames())
+    );
+  }
+
+  initGame() {
+    this.game = new Game('ab9cb6ea-2153-42d2-a9d9-6d85ad17573c');
+  }
+
+  initForms() {
     this.pinsDownForm = new FormGroup({
       'pinsDown': new FormControl('', [
         Validators.required,
@@ -34,70 +58,75 @@ export class BowlingComponent implements OnInit {
     });
   }
 
-  private initFrames() {
-    this.frames = [];
-    let i = 0;
-    for (; i < this.numOfFrames; i++) {
-      this.frames.push(new Frame(i, this.frames, new Array(ATTEMPTS_PER_FRAME).fill(null)));
-    }
-    this.frames.push(new Frame(i, this.frames, new Array(ATTEMPTS_PER_FRAME).fill(null))); // potential 11th frame
-  }
+  // getFrames() {
+  //   this.bowlingService.getFrames(this.frames)
+  //     .subscribe(() => {
+  //       let {currentFrame, currentAttempt} = this.getCurrentAttempt(this.frames);
+  //       this.currentFrame = currentFrame;
+  //       this.currentAttempt = currentAttempt;
+  //     });
+  // }
 
-  getFrames() {
-    this.bowlingService.getFrames(this.frames)
-      .subscribe(frames => {
-        let {currentFrame, currentAttempt} = this.getCurrentAttempt(this.frames);
-        this.currentFrame = currentFrame;
-        this.currentAttempt = currentAttempt;
-      });
-  }
+  // getCurrentAttempt(frames: Frame[]): {currentFrame: number, currentAttempt: number} {
+  //   let frame;
+  //   for (frame of frames) {
+  //     if (!frame.visited) {
+  //       let prevFrame = frame.prevFrame;
+  //       for (let i in prevFrame.attempts) { // check if previous frame was partially finished
+  //         if (prevFrame.attempts[i] === null) {
+  //           return {
+  //             currentFrame: prevFrame.index,
+  //             currentAttempt: +i
+  //           };
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return {
+  //     currentFrame: frame.index,
+  //     currentAttempt: 0
+  //   }
+  // }
 
-  getCurrentAttempt(frames: Frame[]): {currentFrame: number, currentAttempt: number} {
-    for (let frame of frames) {
-      if (!frame.visited) {
-        let prevFrame = frame.prevFrame;
-        for (let i in prevFrame.attempts) { // check if previous frame was partially finished
-          if (prevFrame.attempts[i] === null) {
-            return {
-              currentFrame: prevFrame.index,
-              currentAttempt: +i
-            };
-          }
-        }
-        return {
-          currentFrame: frame.index,
-          currentAttempt: 0
-        }
-      }
-    }
-    return { // game over
-      currentFrame: -1,
-      currentAttempt: -1
-    }
+  get activePlayer(): ActivePlayer {
+    return this.players[this.currentPlayer];
   }
 
   get activeFrame(): Frame {
-    return this.frames[this.currentFrame];
+    return this.activePlayer.frames[this.currentFrame];
   }
 
   get pinsDown() {
     return this.pinsDownForm.get('pinsDown');
   }
 
-  onScore(score: number) {
-    this.activeFrame.attempts[this.currentAttempt] = score;
-
-    this.bowlingService.score(this.currentFrame, this.currentAttempt, score).subscribe();
-
-    this.currentAttempt++;
-    this.activeFrame.visited = true;
-
-    if (!this.activeFrame.isLastFrame && (score === STRIKE || this.currentAttempt === ATTEMPTS_PER_FRAME)) {
-      this.currentAttempt = 0;
+  incrementPlayerTurn() {
+    this.currentAttempt = 0;
+    this.currentPlayer++;
+    if (this.currentPlayer === this.players.length) {
+      this.currentPlayer = 0;
       this.currentFrame++;
     }
+  }
 
-    if (this.currentFrame === this.numOfFrames) { // on the 11th frame
+  onScore(score: number) {
+    this.bowlingService.score(
+      this.game,
+      this.activePlayer.player,
+      this.activeFrame.index + 1,
+      this.currentAttempt + 1,
+      score).subscribe();
+
+    this.activeFrame.attempts[this.currentAttempt] = score;
+    this.activeFrame.visited = true;
+    this.currentAttempt++;
+
+
+    if (!this.activeFrame.isLastFrame && (score === STRIKE || this.currentAttempt === ATTEMPTS_PER_FRAME)) {
+      this.incrementPlayerTurn();
+    }
+
+    if (this.activeFrame.isLastFrame) { // on the 11th frame
       const prevFrame = this.activeFrame.prevFrame;
       if (prevFrame.isStrike && this.currentAttempt === ATTEMPTS_PER_FRAME) {
         this.gameOver = true;

@@ -14,6 +14,7 @@ import { BowlingComponent } from './projects/bowling/bowling.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SubframeComponent } from './projects/bowling/subframe/subframe.component';
 import { BowlingService } from "./projects/bowling/bowling.service";
+import { ScoreboardComponent } from './projects/bowling/scoreboard/scoreboard.component';
 
 
 const routes: Routes = [
@@ -38,7 +39,8 @@ const routes: Routes = [
     ProjectsComponent,
     BtcbalanceComponent,
     BowlingComponent,
-    SubframeComponent
+    SubframeComponent,
+    ScoreboardComponent
   ],
   imports: [
     BrowserModule,

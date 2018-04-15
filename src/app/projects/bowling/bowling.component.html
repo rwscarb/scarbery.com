@@ -4,21 +4,19 @@
   <button class="btn btn-primary" (click)="getFrames()">Get Frames</button>
 </div>
 
-<div class="scoreboard">
-  <div *ngFor="let frame of frames" class="frame"
-       [ngClass]="{'active-frame': frame === activeFrame}"
-       [hidden]="frame.isLastFrame">
-      <app-subframe [frame]="frame"></app-subframe>
-    <div class="frame-score" [hidden]="!frame.visited || frame.isLastFrame">{{ frame.cumulativeScore }}</div>
-  </div>
+<div *ngFor="let player of players">
+  <app-scoreboard [player]="player.player" [frames]="player.frames"></app-scoreboard>
 </div>
 
 <form class="form">
-  <div class="form-group" [formGroup]="pinsDownForm">
-    <input type="number" class="form-control" #pins formControlName="pinsDown"
-           placeholder="number of pins knocked down" id="pinsDown" autofocus>
+  <div class="form-group"
+       [formGroup]="pinsDownForm">
+    <input type="number" class="form-control" placeholder="number of pins knocked down" id="pinsDown" autofocus
+           #pins
+           formControlName="pinsDown">
     <input type="submit" class="form-control" value="Score"
-           (click)="onScore(+pins.value)" [disabled]="gameOver || pinsDownForm.invalid">
+           (click)="onScore(+pins.value)"
+           [disabled]="gameOver || pinsDownForm.invalid">
   </div>
   <div class="alert alert-danger" *ngIf="pinsDown.hasError('min')">Number of pins must be 0-10</div>
   <div class="alert alert-danger" *ngIf="pinsDown.hasError('invalidSum')">Total number of pins per frame cannot exceed 10</div>
