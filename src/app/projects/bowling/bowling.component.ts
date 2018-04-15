@@ -31,7 +31,7 @@ export class BowlingComponent implements OnInit {
     this.route.data
       .subscribe((data) => {
         let gameData = data.game;
-        // xxx: yuck
+        // xxx: yuck, learn ng/ts generic typing system
         this.initGame(gameData);
         this.initPlayers(gameData);
         this.initForms();
@@ -39,16 +39,21 @@ export class BowlingComponent implements OnInit {
   }
 
   initPlayers(gameData) {
-    // todo: get player names
-    gameData.players.forEach((id) => {
-      let frames = this.bowlingService.initEmptyFrames();
-      for (let score of gameData.score_set) {
-        let frame = frames[score.frame - 1];
-        frame.visited = true;
-        frame.attempts[score.attempt - 1] = score.value;
-      }
-      this.players.push(new ActivePlayer(new Player(id, 'Janelle'), this.game, frames));
-    });
+    let playerFrames = {};
+
+    for (let playerData of gameData.players) {
+      playerFrames[playerData.id] = this.bowlingService.initEmptyFrames();
+    }
+
+    for (let score of gameData.score_set) {
+      let frame = playerFrames[score.player][score.frame - 1];
+      frame.visited = true;
+      frame.attempts[score.attempt - 1] = score.value;
+    }
+
+    for (let playerData of gameData.players) {
+      this.players.push(new ActivePlayer(new Player(playerData.id, playerData.name), this.game, playerFrames[playerData.id]));
+    }
   }
 
   initGame(gameData) {
