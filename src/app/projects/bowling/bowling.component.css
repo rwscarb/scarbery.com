@@ -1,3 +1,9 @@
+.btn-score {
+  width: 5em;
+  margin: auto;
+}
+
 #pinsDown {
-  margin: 1em 0;
+  margin: 1em auto;
+  width: 20em;
 }
