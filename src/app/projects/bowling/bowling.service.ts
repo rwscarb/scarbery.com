@@ -34,11 +34,14 @@ export class BowlingService {
 
   getPlayers(): Observable<Player[]> {
     return this.http.get(SERVER + '/v1/bowling/players')
-      .pipe(map(dataArray => dataArray.map(data => new Player(data['id'], data['name']))));
+      .pipe(map((dataArray:{}[]) => dataArray.map(data => new Player(data['id'], data['name']))));
   }
 
-  newGame() {
-    return this.http.post(SERVER + '/v1/bowling/games', {});
+  newGame(players: Player[]) {
+    let playerIDs = players.map(player => player.id);
+    return this.http.post(SERVER + '/v1/bowling/games', {
+      players: playerIDs
+    });
   }
 
   score(game: Game, player: Player, frame: number, attempt: number, score: number) {
