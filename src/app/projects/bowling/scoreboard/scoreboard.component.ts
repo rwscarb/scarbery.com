@@ -11,6 +11,7 @@ import { Player } from "../models/player.model";
 export class ScoreboardComponent implements OnInit {
 
   @Input() frames: Frame[];
+  @Input() activeFrame: Frame;
   @Input() player: Player;
 
   constructor() {
