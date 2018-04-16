@@ -2,10 +2,10 @@ import 'rxjs/add/operator/map';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { Frame } from "./frame.model";
-import { Player } from "./player.model";
+import { Frame } from "./models/frame.model";
+import { Player } from "./models/player.model";
 import { ATTEMPTS_PER_FRAME, NUM_OF_FRAMES } from "./bowling.constants";
-import { Game } from "./game.model";
+import { Game } from "./models/game.model";
 
 
 const SERVER = 'http://127.0.0.1:8000';
@@ -29,6 +29,12 @@ export class BowlingService {
 
   getGame(gameID: string) {
     return this.http.get(SERVER + '/v1/bowling/games/' + gameID);
+  }
+
+  newGame() {
+    return this.http.post(SERVER + '/v1/bowling/games', {
+
+    });
   }
 
   score(game: Game, player: Player, frame: number, attempt: number, score: number) {

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Frame } from "../frame.model";
-import { Player } from "../player.model";
+import { Frame } from "../models/frame.model";
+import { Player } from "../models/player.model";
 
 
 @Component({

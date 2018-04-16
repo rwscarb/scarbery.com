@@ -3,18 +3,18 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 
 import { ATTEMPTS_PER_FRAME, STRIKE } from "./bowling.constants";
 import { BowlingService } from "./bowling.service";
-import { Frame } from './frame.model';
-import { ActivePlayer, Player } from "./player.model";
-import { Game } from "./game.model";
-import { ActivatedRoute } from "@angular/router";
+import { Frame } from './models/frame.model';
+import { ActivePlayer, Player } from "./models/player.model";
+import { Game } from "./models/game.model";
+import { ActivatedRoute, Router } from "@angular/router";
 
 
 @Component({
   selector: 'app-bowling',
-  templateUrl: './bowling.component.html',
-  styleUrls: ['./bowling.component.css']
+  templateUrl: './game.component.html',
+  styleUrls: ['./game.component.css']
 })
-export class BowlingComponent implements OnInit {
+export class GameComponent implements OnInit {
   currentFrame = 0;
   currentAttempt = 0;
   currentPlayer = 0;
@@ -142,7 +142,7 @@ export class BowlingComponent implements OnInit {
     this.pinsDownForm.get('pinsDown').reset();
   }
 
-  validateScore(component: BowlingComponent) {
+  validateScore(component: GameComponent) {
     return (control: AbstractControl) => {
       const score = control.value;
       if (score !== null) {

@@ -1,4 +1,4 @@
-import { STRIKE } from "./bowling.constants";
+import { STRIKE } from "../bowling.constants";
 
 
 export class Frame {

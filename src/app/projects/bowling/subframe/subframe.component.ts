@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Frame } from '../frame.model';
+import { Frame } from '../models/frame.model';
 
 @Component({
   selector: 'app-subframe',

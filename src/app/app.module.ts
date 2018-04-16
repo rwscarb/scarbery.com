@@ -10,12 +10,13 @@ import { ProjectsComponent } from './projects/projects.component';
 import { BlockchainService } from './projects/btcbalance/blockchain.service';
 import { HttpClientModule } from '@angular/common/http';
 import { BtcbalanceComponent } from './projects/btcbalance/btcbalance.component';
-import { BowlingComponent } from './projects/bowling/bowling.component';
+import { GameComponent } from './projects/bowling/game.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SubframeComponent } from './projects/bowling/subframe/subframe.component';
 import { BowlingService } from "./projects/bowling/bowling.service";
 import { ScoreboardComponent } from './projects/bowling/scoreboard/scoreboard.component';
 import { BowlingResolveService } from "./projects/bowling/bowling-resolve.service";
+import { NewgameComponent } from './projects/bowling/newgame/newgame.component';
 
 
 const routes: Routes = [
@@ -25,7 +26,8 @@ const routes: Routes = [
     ],
   },
   {path: 'projects', component: ProjectsComponent, children: [
-      {path: 'bowling/:gameID', component: BowlingComponent, resolve: {game: BowlingResolveService}}
+      {path: 'bowling/new', component: NewgameComponent},
+      {path: 'bowling/:gameID', component: GameComponent, resolve: {game: BowlingResolveService}}
     ]},
   {path: '**', redirectTo: '/resume'}
 ];
@@ -39,9 +41,10 @@ const routes: Routes = [
     EducationComponent,
     ProjectsComponent,
     BtcbalanceComponent,
-    BowlingComponent,
+    GameComponent,
     SubframeComponent,
-    ScoreboardComponent
+    ScoreboardComponent,
+    NewgameComponent
   ],
   imports: [
     BrowserModule,
