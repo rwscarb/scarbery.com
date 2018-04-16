@@ -37,6 +37,13 @@ export class Frame {
     return this.frameScore === STRIKE;
   }
 
+  get finished(): boolean {
+    if (this.isStrike || this.isSpare) {
+      return true;
+    }
+    return this.attempts.every((value => value !== null));
+  }
+
   get frameScore(): number {
     let frameScore = 0;
     this.attempts.forEach((score: number) => {

@@ -34,6 +34,7 @@ export class GameComponent implements OnInit {
         // xxx: yuck, learn ng/ts generic typing system
         this.initGame(gameData);
         this.initPlayers(gameData);
+        this.fastForward();
         this.initForms();
       });
   }
@@ -87,11 +88,22 @@ export class GameComponent implements OnInit {
     return this.pinsDownForm.get('pinsDown');
   }
 
+  private nextPlayer() {
+    this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
+  }
+
+  fastForward() {
+    while (this.activeFrame.finished) {
+      this.endPlayerTurn();
+    }
+    this.currentAttempt = this.activeFrame.attempts.indexOf(null);
+  }
+
   endPlayerTurn() {
     if (this.isGameOver()) {
       this.gameOver = true;
     } else {
-      this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
+      this.nextPlayer();
       this.currentAttempt = 0;
 
       if (this.onExtendedFrame) {
