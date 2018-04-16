@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from "@a
 import { BowlingService } from "./bowling.service";
 import { Observable } from "rxjs/Observable";
 import { catchError } from "rxjs/operators";
+import "rxjs/add/observable/empty";
 
 @Injectable()
 export class BowlingResolveService implements Resolve<any> {

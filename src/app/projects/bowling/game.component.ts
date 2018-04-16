@@ -6,7 +6,7 @@ import { BowlingService } from "./bowling.service";
 import { Frame } from './models/frame.model';
 import { ActivePlayer, Player } from "./models/player.model";
 import { Game } from "./models/game.model";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 
 
 @Component({
