@@ -59,8 +59,9 @@ export class GameComponent implements OnInit {
   /**
    * In case game already exists, start at appropriate frame/attempt
    */
+  // todo: handle extendedFrame frame appropriately
   fastForward() {
-    while (this.activeFrame.finished) {
+    while (this.activeFrame.finished && !this.gameOver) {
       this.endPlayerTurn();
     }
     this.currentAttempt = this.activeFrame.attempts.indexOf(null);
