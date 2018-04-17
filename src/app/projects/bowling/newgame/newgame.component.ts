@@ -14,7 +14,8 @@ export class NewgameComponent implements OnInit {
   availablePlayers: Player[] = [];
   selectedPlayers: Player[] = [];
 
-  constructor(private bowlingService: BowlingService, private router: Router) { }
+  constructor(private bowlingService: BowlingService, private router: Router) {
+  }
 
   ngOnInit() {
     this.bowlingService.getPlayers()
@@ -32,5 +33,13 @@ export class NewgameComponent implements OnInit {
     } else {
       this.selectedPlayers.push(player);
     }
+  }
+
+  addPlayer(name: string) {
+    return this.bowlingService.newPlayer(name)
+      .subscribe(player => {
+        this.availablePlayers.push(player);
+        this.selectedPlayers.push(player);
+      });
   }
 }

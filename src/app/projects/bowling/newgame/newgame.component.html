@@ -1,3 +1,4 @@
+<div class="justify-content-center">
 <h1>Choose players</h1>
 
 <div class="list-group">
@@ -10,6 +11,17 @@
   </div>
 </div>
 
-<div class="row justify-content-center">
+<div class="row">
+  <form (ngSubmit)="addPlayer(playerName.value); newPlayerForm.reset();" #newPlayerForm="ngForm">
+    <div class="form-group">
+      <label for="addPlayer">Add Player</label>
+      <input type="text" class="form-control" #playerName id="addPlayer" autofocus>
+      <input type="submit" class="btn btn-primary" value="Add">
+    </div>
+  </form>
+</div>
+
+<div class="row">
   <button class="btn btn-primary btn-new-game" (click)="startNewGame(selectedPlayers)">New Game</button>
+</div>
 </div>

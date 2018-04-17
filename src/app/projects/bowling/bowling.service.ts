@@ -37,6 +37,11 @@ export class BowlingService {
       .pipe(map((dataArray:{}[]) => dataArray.map(data => new Player(data['id'], data['name']))));
   }
 
+  newPlayer(name: string) {
+    return this.http.post(SERVER + '/v1/bowling/players', {name})
+      .pipe(map(data => new Player(data['id'], data['name'])));
+  }
+
   newGame(players: Player[]) {
     let playerIDs = players.map(player => player.id);
     return this.http.post(SERVER + '/v1/bowling/games', {
