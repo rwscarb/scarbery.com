@@ -4,8 +4,7 @@ import { STRIKE } from "../bowling.constants";
 export class Frame {
   visited = false;
 
-  constructor(public index: number, private frames: Frame[], public attempts: number[]) {
-  }
+  constructor(public index: number, private frames: Frame[], public attempts: number[]) { }
 
   get isExtendedFrame(): boolean {
     return this.index === this.frames.length - 1;
@@ -20,14 +19,7 @@ export class Frame {
   }
 
   get isStrike(): boolean {
-    let isStrike = false;
-    this.attempts.forEach((score: number) => {
-      if (score === STRIKE) {
-        isStrike = true;
-        return;
-      }
-    });
-    return isStrike;
+    return this.attempts.some((score: number) => score === STRIKE);
   }
 
   get isSpare(): boolean {
@@ -45,11 +37,7 @@ export class Frame {
   }
 
   get frameScore(): number {
-    let frameScore = 0;
-    this.attempts.forEach((score: number) => {
-      frameScore += score;
-    });
-    return frameScore;
+    return this.attempts.reduce((n, x) => n + x);
   }
 
   get totalScore(): number {
