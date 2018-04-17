@@ -13,6 +13,7 @@ import { Game } from "../models/game.model";
 export class NewGameComponent implements OnInit {
   availablePlayers: Player[] = [];
   selectedPlayers: Player[] = [];
+  newPlayerName: string;
 
   constructor(
     private bowlingService: BowlingService,
