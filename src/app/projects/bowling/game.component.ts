@@ -86,6 +86,12 @@ export class GameComponent implements OnInit {
     return this.activeFrame.isExtendedFrame && this.activePlayer === this.lastPlayer;
   }
 
+  /**
+   * Handle the special cases of the last frame.
+   * If strike, player immediately gets 2 more attempts
+   * If spare, player immediately gets 1 ore attempt
+   * @param {number} score
+   */
   navigateBoard(score: number) {
     if (this.activeFrame.isExtendedFrame) {
       if (this.activeFrame.prevFrame.isStrike && this.currentAttempt === ATTEMPTS_PER_FRAME) {
