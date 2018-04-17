@@ -14,8 +14,7 @@ const SERVER = 'http://127.0.0.1:8000';
 @Injectable()
 export class BowlingService {
 
-  constructor(public http: HttpClient) {
-  }
+  constructor(public http: HttpClient) { }
 
   initEmptyFrames(): Frame[] {
     let frames: Frame[] = [];
@@ -28,25 +27,29 @@ export class BowlingService {
     return frames;
   }
 
-  getGame(gameID: string) {
-    return this.http.get(SERVER + '/v1/bowling/games/' + gameID);
-  }
-
-  getPlayers(): Observable<Player[]> {
-    return this.http.get(SERVER + '/v1/bowling/players')
-      .pipe(map((dataArray:{}[]) => dataArray.map(data => new Player(data['id'], data['name']))));
-  }
-
-  newPlayer(name: string) {
-    return this.http.post(SERVER + '/v1/bowling/players', {name})
-      .pipe(map(data => new Player(data['id'], data['name'])));
-  }
-
   newGame(players: Player[]) {
     let playerIDs = players.map(player => player.id);
     return this.http.post(SERVER + '/v1/bowling/games', {
       players: playerIDs
     });
+  }
+
+  getGame(gameID: string) {
+    return this.http.get(SERVER + '/v1/bowling/games/' + gameID);
+  }
+
+  newPlayer(name: string): Observable<Player> {
+    return this.http.post(SERVER + '/v1/bowling/players', {name})
+      .pipe(
+        map(data => new Player(data['id'], data['name']))
+      );
+  }
+
+  getPlayers(): Observable<Player[]> {
+    return this.http.get(SERVER + '/v1/bowling/players')
+      .pipe(
+        map((dataArray) => dataArray.map(data => new Player(data['id'], data['name'])))
+      );
   }
 
   score(game: Game, player: Player, frame: number, attempt: number, score: number) {
