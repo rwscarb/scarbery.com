@@ -3,19 +3,24 @@ import { Game } from "./game.model";
 
 
 export class Player {
-  constructor(public id: string, public name: string) {
-  }
+  constructor(
+    public id: string,
+    public name: string
+  ) { }
 }
 
 export class ActivePlayer {
-  constructor(public player: Player, public game: Game, private _frames: Frame[] = []) {
-  }
+  constructor(
+    public player: Player,
+    public game: Game,
+    private _frames: Frame[] = []
+  ) { }
 
-  get frames() {
+  get frames(): Frame[] {
     return this._frames;
   }
 
-  set frames(frames) {
+  set frames(frames: Frame[]) {
     this._frames = frames;
   }
 
