@@ -1,27 +1,34 @@
-<div class="justify-content-center">
-<h1>Choose players</h1>
-
 <div class="list-group">
+
+  <div class="text-center">
+    <h1>Choose players</h1>
+  </div>
+
   <div class="row justify-content-center" *ngFor="let player of availablePlayers">
-    <div class="col-sm-8 col-sm-offset-2">
-      <a class="list-group-item list-group-item-action"
-         [class.active]="selectedPlayers.includes(player)"
-         (click)="selectPlayer(player)">{{ player.name }}</a>
+    <div class="col-sm-8">
+      <button class="list-group-item list-group-item-action btn-player"
+              [class.active]="selectedPlayers.includes(player)"
+              (click)="selectPlayer(player)">
+        {{ player.name }}
+      </button>
     </div>
   </div>
-</div>
 
-<div class="row">
-  <form (ngSubmit)="addPlayer(playerName.value); newPlayerForm.reset();" #newPlayerForm="ngForm">
-    <div class="form-group">
-      <label for="addPlayer">Add Player</label>
-      <input type="text" class="form-control" #playerName id="addPlayer" autofocus>
-      <input type="submit" class="btn btn-primary" value="Add">
+  <div class="row justify-content-center">
+    <div class="col-sm-8">
+      <form (ngSubmit)="addPlayer(playerName.value)" #newPlayerForm="ngForm">
+        <div class="form-group text-center">
+          <label for="addPlayer">New Player</label>
+          <input type="text" class="form-control" #playerName id="addPlayer" placeholder="new player name" autofocus>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
+  </div>
 
-<div class="row">
-  <button class="btn btn-primary btn-new-game" (click)="startNewGame(selectedPlayers)">New Game</button>
-</div>
+  <div class="row text-center justify-content-center">
+    <div class="col-sm-8">
+      <button class="btn btn-primary btn-new-game" (click)="startNewGame(selectedPlayers)">New Game</button>
+    </div>
+  </div>
+
 </div>
