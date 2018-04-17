@@ -7,16 +7,17 @@ import { Game } from "../models/game.model";
 
 @Component({
   selector: 'app-newgame',
-  templateUrl: './newgame.component.html',
-  styleUrls: ['./newgame.component.css']
+  templateUrl: './new-game.component.html',
+  styleUrls: ['./new-game.component.css']
 })
-export class NewgameComponent implements OnInit {
+export class NewGameComponent implements OnInit {
   availablePlayers: Player[] = [];
   selectedPlayers: Player[] = [];
-  newPlayerName: string;
 
-  constructor(private bowlingService: BowlingService, private router: Router) {
-  }
+  constructor(
+    private bowlingService: BowlingService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.bowlingService.getPlayers()

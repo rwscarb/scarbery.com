@@ -16,7 +16,7 @@ import { SubframeComponent } from './projects/bowling/subframe/subframe.componen
 import { BowlingService } from "./projects/bowling/bowling.service";
 import { ScoreboardComponent } from './projects/bowling/scoreboard/scoreboard.component';
 import { BowlingResolveService } from "./projects/bowling/bowling-resolve.service";
-import { NewgameComponent } from './projects/bowling/newgame/newgame.component';
+import { NewGameComponent } from './projects/bowling/newgame/new-game.component';
 
 
 const routes: Routes = [
@@ -26,7 +26,7 @@ const routes: Routes = [
     ],
   },
   {path: 'projects', component: ProjectsComponent, children: [
-      {path: 'bowling/new', component: NewgameComponent},
+      {path: 'bowling/new', component: NewGameComponent},
       {path: 'bowling/:gameID', component: GameComponent, resolve: {game: BowlingResolveService}}
     ]},
   {path: '**', redirectTo: '/resume'}
@@ -44,7 +44,7 @@ const routes: Routes = [
     GameComponent,
     SubframeComponent,
     ScoreboardComponent,
-    NewgameComponent
+    NewGameComponent
   ],
   imports: [
     BrowserModule,
