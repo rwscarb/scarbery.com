@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Frame } from "./models/frame.model";
-import { Player } from "./models/player.model";
+import { ActivePlayer, Player } from "./models/player.model";
 import { ATTEMPTS_PER_FRAME, NUM_OF_FRAMES } from "./bowling.constants";
 import { Game } from "./models/game.model";
 import { Observable } from "rxjs/Observable";
@@ -35,7 +35,27 @@ export class BowlingService {
   }
 
   getGame(gameID: string) {
-    return this.http.get(SERVER + '/v1/bowling/games/' + gameID);
+    return this.http.get(SERVER + '/v1/bowling/games/' + gameID)
+      .pipe(
+        map(gameData => {
+            let ret = {players: [], game: new Game(gameData['id'])};
+
+            let _playerMap = {};
+            for (let player of gameData['players']) {
+              _playerMap[player['id']] = this.initEmptyFrames();
+              player = new Player(player.id, player.name);
+              ret.players.push(new ActivePlayer(player, ret.game, _playerMap[player.id]));
+            }
+
+            for (let score of gameData['score_set']) {
+              let frame = _playerMap[score.player][score.frame - 1];
+              frame.visited = true;
+              frame.attempts[score.attempt - 1] = score.value;
+            }
+
+            return ret;
+        })
+      );
   }
 
   newPlayer(name: string): Observable<Player> {
@@ -48,7 +68,7 @@ export class BowlingService {
   getPlayers(): Observable<Player[]> {
     return this.http.get(SERVER + '/v1/bowling/players')
       .pipe(
-        map((dataArray) => dataArray.map(data => new Player(data['id'], data['name'])))
+        map((dataArray:{}[]) => dataArray.map(data => new Player(data['id'], data['name'])))
       );
   }
 

@@ -18,58 +18,26 @@ export class GameComponent implements OnInit {
   currentFrame = 0;
   currentAttempt = 0;
   currentPlayer = 0;
-  game: Game;
   onExtendedFrame = false; // on e.g. 11th frame due to strike/spare on 10th
   gameOver = false;
-  pinsDownForm: FormGroup;
+  game: Game;
   players: ActivePlayer[] = [];
+  pinsDownForm: FormGroup;
 
-  constructor(private route: ActivatedRoute, private bowlingService: BowlingService) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private bowlingService: BowlingService
+  ) { }
 
   ngOnInit(): void {
     this.route.data
-      .subscribe((data) => {
-        let gameData = data.game;
-        // xxx: yuck, learn ng/ts generic typing system
-        this.initGame(gameData);
-        this.initPlayers(gameData);
+      .subscribe(data => {
+        let {game, players} = data['data'];
+        this.players = players;
+        this.game = game;
         this.fastForward();
         this.initForms();
       });
-  }
-
-  initPlayers(gameData) {
-    let playerFrames = {};
-
-    for (let playerData of gameData.players) {
-      playerFrames[playerData.id] = this.bowlingService.initEmptyFrames();
-    }
-
-    for (let score of gameData.score_set) {
-      let frame = playerFrames[score.player][score.frame - 1];
-      frame.visited = true;
-      frame.attempts[score.attempt - 1] = score.value;
-    }
-
-    for (let playerData of gameData.players) {
-      this.players.push(new ActivePlayer(new Player(playerData.id, playerData.name), this.game, playerFrames[playerData.id]));
-    }
-  }
-
-  initGame(gameData) {
-    this.game = new Game(gameData.id);
-  }
-
-  initForms() {
-    this.pinsDownForm = new FormGroup({
-      'pinsDown': new FormControl('', [
-        Validators.required,
-        Validators.min(0),
-        Validators.max(STRIKE),
-        this.validateScore(this) // xxx: there must be a better way
-      ])
-    });
   }
 
   get activePlayer(): ActivePlayer {
@@ -80,18 +48,17 @@ export class GameComponent implements OnInit {
     return this.players[this.players.length - 1];
   }
 
-  get activeFrame(): Frame {
-    return this.activePlayer.frames[this.currentFrame];
-  }
-
-  get pinsDown() {
-    return this.pinsDownForm.get('pinsDown');
-  }
-
   private nextPlayer() {
     this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
   }
 
+  get activeFrame(): Frame {
+    return this.activePlayer.frames[this.currentFrame];
+  }
+
+  /**
+   * In case game already exists, start at appropriate frame/attempt
+   */
   fastForward() {
     while (this.activeFrame.finished) {
       this.endPlayerTurn();
@@ -152,6 +119,21 @@ export class GameComponent implements OnInit {
     this.navigateBoard(score);
 
     this.pinsDownForm.get('pinsDown').reset();
+  }
+
+  initForms() {
+    this.pinsDownForm = new FormGroup({
+      'pinsDown': new FormControl('', [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(STRIKE),
+        this.validateScore(this) // xxx: there must be a better way
+      ])
+    });
+  }
+
+  get pinsDown() {
+    return this.pinsDownForm.get('pinsDown');
   }
 
   validateScore(component: GameComponent) {

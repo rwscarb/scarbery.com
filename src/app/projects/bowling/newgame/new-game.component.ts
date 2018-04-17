@@ -26,7 +26,9 @@ export class NewGameComponent implements OnInit {
 
   startNewGame(players: Player[]) {
     return this.bowlingService.newGame(players)
-      .subscribe((game: Game) => this.router.navigate(['/projects/bowling/', game.id]));
+      .subscribe((game: Game) => {
+        this.router.navigate(['/projects/bowling/', game.id]);
+      });
   }
 
   selectPlayer(player: Player) {

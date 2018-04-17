@@ -27,7 +27,7 @@ const routes: Routes = [
   },
   {path: 'projects', component: ProjectsComponent, children: [
       {path: 'bowling/new', component: NewGameComponent},
-      {path: 'bowling/:gameID', component: GameComponent, resolve: {game: BowlingResolveService}}
+      {path: 'bowling/:gameID', component: GameComponent, resolve: {data: BowlingResolveService}}
     ]},
   {path: '**', redirectTo: '/resume'}
 ];
