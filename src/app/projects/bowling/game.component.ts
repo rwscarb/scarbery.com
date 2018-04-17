@@ -4,7 +4,7 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { ATTEMPTS_PER_FRAME, STRIKE } from "./bowling.constants";
 import { BowlingService } from "./bowling.service";
 import { Frame } from './models/frame.model';
-import { ActivePlayer, Player } from "./models/player.model";
+import { ActivePlayer } from "./models/player.model";
 import { Game } from "./models/game.model";
 import { ActivatedRoute } from "@angular/router";
 
