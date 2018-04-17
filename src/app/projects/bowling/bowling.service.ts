@@ -2,13 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Frame } from "./models/frame.model";
 import { ActivePlayer, Player } from "./models/player.model";
-import { ATTEMPTS_PER_FRAME, NUM_OF_FRAMES } from "./bowling.constants";
+import { API_SERVER, ATTEMPTS_PER_FRAME, NUM_OF_FRAMES } from "./bowling.constants";
 import { Game } from "./models/game.model";
 import { Observable } from "rxjs/Observable";
 import { map } from "rxjs/operators";
-
-
-const SERVER = 'http://127.0.0.1:8000';
 
 
 @Injectable()
@@ -29,13 +26,13 @@ export class BowlingService {
 
   newGame(players: Player[]) {
     let playerIDs = players.map(player => player.id);
-    return this.http.post(SERVER + '/v1/bowling/games', {
+    return this.http.post(API_SERVER + '/v1/bowling/games', {
       players: playerIDs
     });
   }
 
   getGame(gameID: string) {
-    return this.http.get(SERVER + '/v1/bowling/games/' + gameID)
+    return this.http.get(API_SERVER + '/v1/bowling/games/' + gameID)
       .pipe(
         map(gameData => {
             let ret = {players: [], game: new Game(gameData['id'])};
@@ -59,21 +56,21 @@ export class BowlingService {
   }
 
   newPlayer(name: string): Observable<Player> {
-    return this.http.post(SERVER + '/v1/bowling/players', {name})
+    return this.http.post(API_SERVER + '/v1/bowling/players', {name})
       .pipe(
         map(data => new Player(data['id'], data['name']))
       );
   }
 
   getPlayers(): Observable<Player[]> {
-    return this.http.get(SERVER + '/v1/bowling/players')
+    return this.http.get(API_SERVER + '/v1/bowling/players')
       .pipe(
         map((dataArray:{}[]) => dataArray.map(data => new Player(data['id'], data['name'])))
       );
   }
 
   score(game: Game, player: Player, frame: number, attempt: number, score: number) {
-    return this.http.post(SERVER + '/v1/bowling/scores', {
+    return this.http.post(API_SERVER + '/v1/bowling/scores', {
       game: game.id,
       player: player.id,
       frame: frame,
