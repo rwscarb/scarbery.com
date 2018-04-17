@@ -8,8 +8,10 @@ import "rxjs/add/observable/empty";
 @Injectable()
 export class BowlingResolveService implements Resolve<any> {
 
-  constructor(private router: Router, private bowlingService: BowlingService) {
-  }
+  constructor(
+    private router: Router,
+    private bowlingService: BowlingService
+  ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     let gameID = route.paramMap.get('gameID');
