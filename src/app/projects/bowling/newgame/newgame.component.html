@@ -19,8 +19,9 @@
       <form (ngSubmit)="addPlayer(newPlayerName); newPlayerForm.resetForm();" #newPlayerForm="ngForm">
         <div class="form-group text-center">
           <label for="addPlayer">New Player</label>
-          <input type="text" class="form-control" id="addPlayer" name="playerName" placeholder="new player name" autofocus
+          <input type="text" class="form-control" id="addPlayer" name="playerName" placeholder="new player name" autofocus required
                  [(ngModel)]="newPlayerName">
+          <button [disabled]="!newPlayerForm.form.valid" hidden></button>
         </div>
       </form>
     </div>
