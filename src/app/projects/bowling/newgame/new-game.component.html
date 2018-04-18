@@ -21,7 +21,7 @@
           <label for="addPlayer">New Player</label>
           <input type="text" class="form-control" id="addPlayer" name="playerName" placeholder="new player name" autofocus required
                  [(ngModel)]="newPlayerName">
-          <button [disabled]="!newPlayerForm.form.valid" hidden></button>
+          <button [disabled]="!newPlayerForm.form.valid" class="btn-add-player">+</button>
         </div>
       </form>
     </div>

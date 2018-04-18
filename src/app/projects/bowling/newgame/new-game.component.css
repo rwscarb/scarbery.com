@@ -1,6 +1,20 @@
 .btn-player {
   margin: .1em 0;
 }
+
 .btn-new-game {
   margin-top: 1em;
 }
+
+#addPlayer {
+  display: inline-block;
+  width: 88%;
+}
+
+.btn-add-player {
+  display: inline-block;
+  width: 10%;
+  text-align: center;
+  height: 2.2em;
+}
+
