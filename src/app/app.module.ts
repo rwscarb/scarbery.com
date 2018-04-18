@@ -15,7 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SubframeComponent } from './projects/bowling/subframe/subframe.component';
 import { BowlingService } from "./projects/bowling/bowling.service";
 import { ScoreboardComponent } from './projects/bowling/scoreboard/scoreboard.component';
-import { BowlingResolveService } from "./projects/bowling/bowling-resolve.service";
+import { BowlingResolveService, PlayerResolveService } from "./projects/bowling/bowling-resolve.service";
 import { NewGameComponent } from './projects/bowling/newgame/new-game.component';
 
 
@@ -26,7 +26,7 @@ const routes: Routes = [
     ],
   },
   {path: 'projects', component: ProjectsComponent, children: [
-      {path: 'bowling/new', component: NewGameComponent},
+      {path: 'bowling/new', component: NewGameComponent, resolve: {players: PlayerResolveService}},
       {path: 'bowling/:gameID', component: GameComponent, resolve: {data: BowlingResolveService}}
     ]},
   {path: '**', redirectTo: '/resume'}
@@ -56,7 +56,8 @@ const routes: Routes = [
   providers: [
     BowlingService,
     BlockchainService,
-    BowlingResolveService
+    BowlingResolveService,
+    PlayerResolveService
   ],
   bootstrap: [AppComponent]
 })

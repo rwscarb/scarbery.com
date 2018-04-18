@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BowlingService } from "../bowling.service";
 import { Player } from "../models/player.model";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Game } from "../models/game.model";
 
 
@@ -17,12 +17,15 @@ export class NewGameComponent implements OnInit {
 
   constructor(
     private bowlingService: BowlingService,
+    private route: ActivatedRoute,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.bowlingService.getPlayers()
-      .subscribe(players => this.availablePlayers = players);
+    this.route.data
+      .subscribe(data => {
+        this.availablePlayers = data.players
+      });
   }
 
   startNewGame(players: Player[]) {
