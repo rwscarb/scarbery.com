@@ -6,8 +6,14 @@ export class Frame {
 
   constructor(public index: number, private frames: Frame[], public attempts: number[]) { }
 
+  // hidden 11th frame used in case of spare/strike on 10th
   get isExtendedFrame(): boolean {
     return this.index === this.frames.length - 1;
+  }
+
+  // actual last frame before hidden 11th frame
+  get isLastFrame(): boolean {
+    return this.index === this.frames.length - 2;
   }
 
   get nextFrame(): Frame {

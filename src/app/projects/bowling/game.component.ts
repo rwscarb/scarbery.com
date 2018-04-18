@@ -68,12 +68,11 @@ export class GameComponent implements OnInit {
   }
 
   endPlayerTurn() {
+    this.currentAttempt = 0;
     if (this.isGameOver()) {
       this.gameOver = true;
     } else {
       this.nextPlayer();
-      this.currentAttempt = 0;
-
       if (this.onExtendedFrame) {
         this.currentFrame--;
         this.onExtendedFrame = false;
@@ -84,7 +83,7 @@ export class GameComponent implements OnInit {
   }
 
   isGameOver(): boolean {
-    return this.activeFrame.isExtendedFrame && this.activePlayer === this.lastPlayer;
+    return (this.activeFrame.isExtendedFrame || this.activeFrame.isLastFrame) && this.activePlayer === this.lastPlayer;
   }
 
   /**
@@ -94,19 +93,23 @@ export class GameComponent implements OnInit {
    * @param {number} score
    */
   navigateBoard(score: number) {
+    // finish prematurely in extended frame if not a strike or spare
     if (this.activeFrame.isExtendedFrame) {
       if (this.activeFrame.prevFrame.isStrike && this.currentAttempt === ATTEMPTS_PER_FRAME) {
         this.endPlayerTurn();
       } else if (this.activeFrame.prevFrame.isSpare && this.currentAttempt === 1) {
         this.endPlayerTurn();
       }
+      // don't change players if player qualifies for extended frame
     } else if (this.activeFrame.nextFrame.isExtendedFrame) {
       if (this.activeFrame.isSpare || this.activeFrame.isStrike) {
         this.onExtendedFrame = true;
         this.currentAttempt = 0;
         this.currentFrame++;
+      } else if (this.activeFrame.finished) {
+        this.endPlayerTurn();
       }
-    } else if (score === STRIKE || this.currentAttempt === ATTEMPTS_PER_FRAME) {
+    } else if (this.activeFrame.finished) {
       this.endPlayerTurn();
     }
   }
