@@ -8,13 +8,13 @@
 
 #addPlayer {
   display: inline-block;
-  width: 88%;
+  width: 87%;
 }
 
 .btn-add-player {
   display: inline-block;
-  width: 10%;
   text-align: center;
   height: 2.2em;
+  width: 2.2em;
 }
 
