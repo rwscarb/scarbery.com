@@ -149,7 +149,11 @@ export class GameComponent implements OnInit {
   validateScore(component: GameComponent) {
     return (control: AbstractControl) => {
       const score = control.value;
-      if (score !== null) {
+      if (typeof score === "number") {
+
+        if (!Number.isInteger(score)) {
+          return {invalidType: true};
+        }
 
         if (component.activeFrame.isExtendedFrame) {
           if (score > STRIKE) {

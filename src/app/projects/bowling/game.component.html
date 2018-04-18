@@ -21,4 +21,5 @@
   </div>
   <div class="alert alert-danger" *ngIf="pinsDown.hasError('min')">Number of pins must be 0-10</div>
   <div class="alert alert-danger" *ngIf="pinsDown.hasError('invalidSum')">Total number of pins per frame cannot exceed 10</div>
+  <div class="alert alert-danger" *ngIf="pinsDown.hasError('invalidType')">Number of pins must be a whole number</div>
 </form>
