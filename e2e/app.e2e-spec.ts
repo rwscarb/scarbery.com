@@ -1,15 +1,24 @@
-import { AppPage } from './app.po';
+import { NewGamePage } from './new-game.po';
 
-describe('ng-sandbox App', () => {
-  let page: AppPage;
+
+describe('new game page', () => {
+  let page: NewGamePage;
+  let players = ['Ryan', 'Janelle'];
 
   beforeEach(() => {
-    page = new AppPage();
+    page = new NewGamePage();
+    page.navigateToNewGame();
   });
 
-  it('should display welcome message', () => {
-    page.navigateToNewGame();
+  function addPlayer(name: string) {
+    page.newPlayerText.sendKeys(name);
+    page.newPlayerSubmit.click();
+  }
+
+  it('should allow players to be added', () => {
     expect(page.getHeadingText()).toEqual('Choose players');
-    expect(page.getPlayers().count()).toEqual(3);
+    expect(page.getPlayers().count()).toEqual(0);
+    players.forEach((name) => addPlayer(name));
+    expect(page.getPlayers().count()).toEqual(2);
   });
 });

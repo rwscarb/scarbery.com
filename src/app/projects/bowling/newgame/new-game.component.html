@@ -18,10 +18,10 @@
     <div class="col-sm-8">
       <form (ngSubmit)="addPlayer(newPlayerName); newPlayerForm.resetForm();" #newPlayerForm="ngForm">
         <div class="form-group text-center">
-          <label for="addPlayer">New Player</label>
-          <input type="text" class="form-control" id="addPlayer" name="playerName" placeholder="new player name" autofocus required
+          <label for="add-player">New Player</label>
+          <input type="text" class="form-control" id="add-player" name="playerName" placeholder="new player name" autofocus required
                  [(ngModel)]="newPlayerName">
-          <button [disabled]="!newPlayerForm.form.valid" class="btn-add-player">+</button>
+          <button [disabled]="!newPlayerForm.form.valid" id="btn-add-player">+</button>
         </div>
       </form>
     </div>
@@ -29,7 +29,7 @@
 
   <div class="row text-center justify-content-center">
     <div class="col-sm-8">
-      <button class="btn btn-primary btn-new-game"
+      <button class="btn btn-primary" id="btn-new-game"
               (click)="startNewGame(selectedPlayers)"
               [disabled]="!selectedPlayers.length"
       >New Game</button>
