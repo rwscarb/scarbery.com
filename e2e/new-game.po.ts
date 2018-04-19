@@ -11,7 +11,11 @@ export class NewGamePage {
   }
 
   getPlayers() {
-    return element.all(by.css('.list-item-player'));
+    return element.all(by.css('.btn-player'));
+  }
+
+  getActivePlayers() {
+    return element.all(by.css('.btn-player.active'));
   }
 
   get newPlayerText() {

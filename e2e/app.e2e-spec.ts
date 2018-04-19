@@ -18,7 +18,9 @@ describe('new game page', () => {
   it('should allow players to be added', () => {
     expect(page.getHeadingText()).toEqual('Choose players');
     expect(page.getPlayers().count()).toEqual(0);
+    expect(page.getActivePlayers().count()).toEqual(0);
     players.forEach((name) => addPlayer(name));
     expect(page.getPlayers().count()).toEqual(2);
+    expect(page.getActivePlayers().count()).toEqual(2);
   });
 });
