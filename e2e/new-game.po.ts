@@ -1,7 +1,8 @@
 import { browser, by, element } from 'protractor';
+import { BowlingCommon } from "./bowling-common";
 
 
-export class NewGamePage {
+export class NewGamePage extends BowlingCommon {
   navigateToNewGame() {
     return browser.get('#/projects/bowling/new');
   }

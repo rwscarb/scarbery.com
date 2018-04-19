@@ -7,6 +7,7 @@ describe('new game page', () => {
 
   beforeEach(() => {
     page = new NewGamePage();
+    page.clearDB();
     page.navigateToNewGame();
   });
 
@@ -15,12 +16,19 @@ describe('new game page', () => {
     page.newPlayerSubmit.click();
   }
 
+  function createMockPlayers() {
+    players.forEach((name) => addPlayer(name));
+  }
+
   it('should allow players to be added', () => {
     expect(page.getHeadingText()).toEqual('Choose players');
+    expect(page.newGameSubmit.isEnabled()).toBe(false);
     expect(page.getPlayers().count()).toEqual(0);
     expect(page.getActivePlayers().count()).toEqual(0);
-    players.forEach((name) => addPlayer(name));
+    createMockPlayers();
     expect(page.getPlayers().count()).toEqual(2);
     expect(page.getActivePlayers().count()).toEqual(2);
+    expect(page.newGameSubmit.isEnabled()).toBe(true);
   });
+
 });
