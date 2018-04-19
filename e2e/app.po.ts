@@ -1,11 +1,15 @@
 import { browser, by, element } from 'protractor';
 
 export class AppPage {
-  navigateTo() {
-    return browser.get('/');
+  navigateToNewGame() {
+    return browser.get('/projects/bowling/new');
   }
 
-  getParagraphText() {
+  getHeadingText() {
     return element(by.css('app-root h1')).getText();
+  }
+
+  getPlayers() {
+    return element.all(by.css('.list-item-player'));
   }
 }

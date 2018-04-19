@@ -5,7 +5,7 @@
   </div>
 
   <div class="row justify-content-center" *ngFor="let player of availablePlayers">
-    <div class="col-sm-8">
+    <div class="col-sm-8 list-item-player">
       <button class="list-group-item list-group-item-action btn-player"
               [class.active]="selectedPlayers.includes(player)"
               (click)="selectPlayer(player)">

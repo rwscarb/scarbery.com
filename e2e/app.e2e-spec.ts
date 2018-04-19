@@ -8,7 +8,8 @@ describe('ng-sandbox App', () => {
   });
 
   it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getParagraphText()).toEqual('Welcome to app!');
+    page.navigateToNewGame();
+    expect(page.getHeadingText()).toEqual('Choose players');
+    expect(page.getPlayers().count()).toEqual(3);
   });
 });
