@@ -2,8 +2,8 @@ import { NewGamePage } from './new-game.po';
 
 
 describe('new game page', () => {
-  let page: NewGamePage;
-  let players = ['Ryan', 'Janelle'];
+  const page: NewGamePage;
+  const players = ['Ryan', 'Janelle'];
 
   beforeEach(() => {
     page = new NewGamePage();

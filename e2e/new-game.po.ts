@@ -1,5 +1,5 @@
 import { browser, by, element } from 'protractor';
-import { BowlingCommon } from "./bowling-common";
+import { BowlingCommon } from './bowling-common';
 
 
 export class NewGamePage extends BowlingCommon {
